@@ -1,0 +1,14 @@
+{
+  "name": "ribs-tree-viewer-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Ryan Yoo",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "ws": "^7.3.1"
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}
