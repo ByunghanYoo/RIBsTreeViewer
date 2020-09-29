@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "RIBs Tree Viewer",
+  "name": "RIBs Tree Viewer",
   "icons": [
     {
       "src": "favicon.ico",
