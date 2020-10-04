@@ -1,16 +1,23 @@
 import { createReducer } from "typesafe-actions";
-import { DO_SOMETING } from "./actions";
+import { SET_STATUS, SET_WS_URL } from "./actions";
 import { WebSocketAction, WebSocketState } from "./types";
 
-const initialState: WebSocketState = {};
+const initialState: WebSocketState = {
+  url: null,
+  isUrlValid: false,
+  status: "disconnected",
+};
 
 const webSocketReducer = createReducer<WebSocketState, WebSocketAction>(
   initialState,
   {
-    [DO_SOMETING]: (state, action) => {
-      const {} = action.payload;
-      return { ...state };
+    [SET_WS_URL]: (state, action) => {
+      const { payload: url } = action;
+      const isUrlValid = url != null && 0 < url.length;
+
+      return { ...state, url, isUrlValid };
     },
+    [SET_STATUS]: (state, action) => ({ ...state, status: action.payload }),
   }
 );
 
