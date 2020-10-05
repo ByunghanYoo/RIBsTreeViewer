@@ -1,6 +1,7 @@
 import { eventChannel, EventChannel, END } from "redux-saga";
 import { take, select, put, call, fork, cancel } from "redux-saga/effects";
 import { RootState } from "src/modules";
+import { setRootNode } from "src/modules/ribsTree";
 import {
   connectWebSocket,
   disconnectWebSocket,
@@ -9,6 +10,11 @@ import {
   setStatus,
   WebSocketState,
 } from "src/modules/webSocket";
+import {
+  isUpdateRootNodeCommand,
+  isWebSocketMessage,
+  WebSocketMessage,
+} from "./types";
 
 function* webSocketSaga() {
   while (true) {
@@ -48,7 +54,15 @@ function connect(url: string): Promise<WebSocket> {
 function subscribe(socket: WebSocket): EventChannel<any> {
   return eventChannel((emit) => {
     socket.onmessage = (event) => {
-      console.log(event.data);
+      let data = JSON.parse(event.data);
+      console.log(data);
+      console.log(typeof data);
+      console.log(isWebSocketMessage(data));
+
+      if (isWebSocketMessage(data)) {
+        const action = handleMessage(data);
+        emit(action);
+      }
     };
     socket.onclose = () => {
       emit(setStatus("disconnected"));
@@ -61,6 +75,16 @@ function subscribe(socket: WebSocket): EventChannel<any> {
 
     return () => {};
   });
+}
+
+function handleMessage(message: WebSocketMessage): any | null {
+  console.log(`isUpdateRootNodeCommand(message) : ${isUpdateRootNodeCommand(message)}`);
+  if (isUpdateRootNodeCommand(message)) {
+    console.log(message.data);
+    return setRootNode(message.data);
+  } else {
+    return null;
+  }
 }
 
 function* listenDisconnect(socket: WebSocket) {

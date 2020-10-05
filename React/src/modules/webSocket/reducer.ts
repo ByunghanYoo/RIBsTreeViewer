@@ -3,8 +3,8 @@ import { SET_STATUS, SET_WS_URL } from "./actions";
 import { WebSocketAction, WebSocketState } from "./types";
 
 const initialState: WebSocketState = {
-  url: null,
-  isUrlValid: false,
+  url: "ws://0.0.0.0:8875", // null,
+  isUrlValid: true, // false,
   status: "disconnected",
 };
 
